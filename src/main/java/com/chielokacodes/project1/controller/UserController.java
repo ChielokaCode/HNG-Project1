@@ -14,8 +14,8 @@ public class UserController {
     @Autowired
     private HttpServletRequest request;
 
-    @PostMapping("/hello")
-    public ResponseEntity<User> getName(@RequestParam String visitor_name){
+    @GetMapping("/hello")
+    public ResponseEntity<User> greetName(@RequestParam String visitor_name){
         String bodyGreeting ="Hello, " + visitor_name + "!";
         User user = User.builder()
                 .client_ip(request.getRemoteAddr())
