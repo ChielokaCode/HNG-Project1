@@ -1,28 +1,28 @@
+
 package com.chielokacodes.project1.controller;
 
+import com.chielokacodes.project1.service.UserService;
 import com.chielokacodes.project1.model.User;
 import jakarta.servlet.http.HttpServletRequest;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
 
 @RestController
-@RequestMapping("api")
+@RequestMapping("/api")
 public class UserController {
+    private final UserService userService;
 
-    @Autowired
-    private HttpServletRequest request;
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
 
     @GetMapping("/hello")
-    public ResponseEntity<User> greetName(@RequestParam String visitor_name){
-        String bodyGreeting ="Hello, " + visitor_name + "!";
-        User user = User.builder()
-                .client_ip(request.getRemoteAddr())
-                .location(request.getLocale().getCountry())
-                .greeting(bodyGreeting)
-                .build();
-
-        return new ResponseEntity<>(user, HttpStatus.OK);
+    public ResponseEntity<User> greeting(@RequestParam(name = "visitor_name") String visitor_name, HttpServletRequest request){
+        return userService.greetings(visitor_name, request);
     }
+
 }
